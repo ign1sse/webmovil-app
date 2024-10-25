@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react'
-import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button"
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const URL: string = process.env.NEXT_PUBLIC_API_URL as string;
 
@@ -13,22 +12,21 @@ const quizzes = [
 ];
 
 function HomeScreen() {
-    const router = useRouter();
+    const [userData, setUserData] = useState();
 
-    const user = JSON.parse(localStorage.getItem('userData') || '{}');
-
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('userData');
-        router.push('/');
-    };
-
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const data = localStorage.getItem('userData');
+            if (data) {
+                setUserData(JSON.parse(data));
+            }
+        }
+    }, []);
     return (
         <div className="container mx-auto p-4">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Lista de Cuestionarios</h1>
-                <button className="btn bg-gradient-to-br from-orange-500 to-fuchsia-600 text-white px-4 py-2 rounded">+</button>
+                <Link href="/app/create" className="btn bg-gradient-to-br from-orange-500 to-fuchsia-600 text-white px-4 py-2 rounded">+</Link>
             </div>
             <p className="mb-4">Total de cuestionarios: {quizzes.length}</p>
             <ul className="space-y-4">

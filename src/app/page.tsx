@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button"
@@ -15,10 +15,20 @@ const URL: string = process.env.NEXT_PUBLIC_API_URL as string;
 function StartScreen() {
     const router = useRouter();
 
+    const [userToken, setUserToken] = useState<string | null>(null);
+    const [refreshToken, setRefreshToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const token = localStorage.getItem('authToken');
+            setUserToken(token);
+            const rToken = localStorage.getItem('refreshToken');
+            setRefreshToken(rToken);
+        }
+    }, []);
+
     const handleAuth = async () => {
         try {
-            const userToken = localStorage.getItem('authToken');
-            const refreshToken = localStorage.getItem('refreshToken');
             if (!userToken) {
                 return;
             }
