@@ -37,9 +37,9 @@ function HomeScreen() {
                             <p>Preguntas: {quiz.questions}</p>
                             <p>Fecha de creación: {quiz.createdAt}</p>
                         </div>
-                        <button className="text-gray-500 hover:text-gray-700">
+                        <div className="text-gray-500 hover:text-gray-700">
                             <span className="material-symbols-outlined text-3xl">arrow_forward</span>
-                        </button>
+                        </div>
                     </li>
                 ))}
             </ul>

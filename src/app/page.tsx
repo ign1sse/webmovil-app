@@ -15,24 +15,22 @@ const URL: string = process.env.NEXT_PUBLIC_API_URL as string;
 function StartScreen() {
     const router = useRouter();
 
-    const [userToken, setUserToken] = useState<string | null>(null);
-    const [refreshToken, setRefreshToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('authToken');
-            setUserToken(token);
-            const rToken = localStorage.getItem('refreshToken');
-            setRefreshToken(rToken);
-        }
-    }, []);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleAuth = async () => {
+        console.log('Authenticating...');
         try {
+            const userToken = localStorage.getItem('authToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+
             if (!userToken) {
+                setIsAuthenticated(false);
+                setIsLoading(false);
                 return;
             }
-            const response = await fetch(URL+'/api/auth', {
+
+            const response = await fetch(URL + '/api/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,32 +46,40 @@ function StartScreen() {
                 }
                 router.push('/app');
             } else if (data.status === 400) {
-                alert('Error en la autenticación');
+                setIsAuthenticated(false);
+                setIsLoading(false);
                 throw new Error('Error en la autenticación');
             }
         } catch (error) {
             console.error('Error:', error);
+            setIsAuthenticated(false);
+            setIsLoading(false);
         }
     };
 
-    handleAuth();
-    
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            handleAuth();
+        }
+    }, []);
+
     return (
         <div className="p-8 space-y-6 text-center">
-            <div className="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center">
-                <Home className="w-12 h-12 text-white" />
+            <div className="mx-auto flex items-center justify-center">
+                <img src="/static/logot.png" alt="logo" className="h-24" />
             </div>
-            <h1 className="text-2xl font-bold">Bienvenido a Mi App</h1>
-            <div className="space-y-4">
-                <Button className="w-full">
-                    <Link href="/login" className="w-full">Iniciar Sesión</Link>
-                </Button>
-                <Button className="w-full" variant="outline">
-                    <Link href="/register" className="w-full">Registrarse</Link>
-                </Button>
-            </div>
+            { !isLoading && !isAuthenticated && (
+                <>
+                    {/* Mostrar lo de abajo sólo si no se pudo autenticar */}
+                    <h1 className="text-2xl font-bold">Quizzes</h1>
+                    <div className="flex flex-col gap-2">
+                        <Link href="/login" className="flex justify-center w-full bg-gradient-to-br from-orange-500 to-fuchsia-600 text-white text-center px-4 py-2 rounded-lg">Iniciar Sesión</Link>
+                        <Link href="/register" className="flex justify-center w-full border border-gray-500 text-black text-center px-4 py-2 rounded-lg">Registrarse</Link>
+                    </div>
+                </>
+            )}
         </div>
-    )
+    );
 }
 
 export default StartScreen;

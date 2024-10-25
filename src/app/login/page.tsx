@@ -71,7 +71,7 @@ function LoginScreen() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <Button className="w-full" onClick={handleLogin} disabled={isLoading}>
+                <Button className="flex justify-center w-full bg-gradient-to-br from-orange-500 to-fuchsia-600 text-white text-center px-4 py-2 rounded-lg" onClick={handleLogin} disabled={isLoading}>
                     {isLoading ? 'Cargando...' : (
                         <>
                             <LogIn className="w-4 h-4 mr-2" />
