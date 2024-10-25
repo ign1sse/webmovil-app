@@ -7,7 +7,7 @@ export default function Layout({
         <div>
             <nav className="flex w-full items-center justify-between p-4">
                 <img src="/static/logot.png" alt="logo" className="h-16" />
-                <button>
+                <button className="btn">
                     <span className="material-symbols-outlined text-3xl">
                         menu
                     </span>
