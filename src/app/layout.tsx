@@ -27,6 +27,7 @@ export default function RootLayout({
         <html lang="es">
             <head>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+                <link rel="icon" href="/static/logot.png" />
             </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
