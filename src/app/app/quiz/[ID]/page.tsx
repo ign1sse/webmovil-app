@@ -95,6 +95,12 @@ const cuestionarioEjemplo: Cuestionario = {
     ]
 };
 
+export async function generateStaticParams() {
+    // Reemplaza con tus IDs reales
+    const IDs = ['0', '1', '2'];
+    return IDs.map((id) => ({ ID: id }));
+}
+
 export default function ResponderCuestionario() {
     const [seccionActual, setSeccionActual] = useState(0);
     const [respuestas, setRespuestas] = useState<Record<number, number>>({});
